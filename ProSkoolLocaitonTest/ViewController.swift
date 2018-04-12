@@ -67,6 +67,8 @@ class ViewController: UIViewController {
     var safeRoutePolylineRef2: GMSPolyline?
     var isDraggingGoingOn: Bool = false
     
+    var halfAngleMarker:GMSMarker?
+    
     
     let distanceFilterOptions = [kCLDistanceFilterNone, 5.0, 10.0, 20.0, 30.0, 50.0, 75.0, 100.0, 200.0, 500.0, 1000.0 ]
     
@@ -265,9 +267,29 @@ extension ViewController : GMSMapViewDelegate {
         arrayOfPlacedMarkers.append(newMarker)
         
         if arrayOfPlacedMarkers.count > 2 {
-            drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
+            //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
             //drawPolyLines(markers: arrayOfPlacedMarkers)
+            drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
+
         }
+    }
+    
+    func drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: [GMSMarker]) {
+        if let safeRoutePolyline = self.safeRoutePolyline {
+            safeRoutePolyline.map = nil
+        }
+        let mutablePath = GMSMutablePath()
+        mutablePath.add(arrayOfPlacedMarkers[0].position)
+        mutablePath.add(arrayOfPlacedMarkers[1].position)
+        mutablePath.add(arrayOfPlacedMarkers[2].position)
+        
+        safeRoutePolyline = GMSPolyline(path: mutablePath)
+        let styleSpan  = GMSStrokeStyle.gradient(from: UIColor.green.withAlphaComponent(0.3),
+                                                 to: UIColor.red.withAlphaComponent(0.3))
+        safeRoutePolyline?.strokeColor = UIColor.black.withAlphaComponent(0.3)
+        safeRoutePolyline?.spans = [GMSStyleSpan.init(style: styleSpan)]
+        safeRoutePolyline?.strokeWidth = 50.0
+        safeRoutePolyline?.map = self.mapView
     }
     
     // MARK: DRAGGING A MARKER
@@ -278,7 +300,8 @@ extension ViewController : GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
         if marker == currentLocationMarker { return }
         
-        drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
+        //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
+        drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
         
         
     }

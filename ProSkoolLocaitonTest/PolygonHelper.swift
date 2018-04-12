@@ -33,6 +33,42 @@ class PolygonHelper {
             
         }).map { $0.coordinate }
     }
+    class func getAngleABOFromPoints(A : CLLocationCoordinate2D, B: CLLocationCoordinate2D, C: CLLocationCoordinate2D) -> Double {
+        
+        var m1 = 0.0
+        if A.longitude - B.longitude == 0 {
+            m1 = tan(Double.pi / 2)
+        } else {
+            m1 = (A.latitude - B.latitude) / (A.longitude - B.longitude)
+        }
+        var m2 = 0.0
+        if B.longitude - C.longitude == 0 {
+            m2 = tan(Double.pi / 2)
+        } else {
+            m2 = (B.latitude - C.latitude) / (B.longitude - C.longitude)
+        }
+        
+        
+        
+        let value1 = (m2 - m1) / (1 + m1 * m2)
+        
+        let anglePositiveVe = atan(value1)
+        let angleNegativeVe = atan(-value1)
+        
+        if fabs(anglePositiveVe) < fabs(angleNegativeVe) {
+            return fabs(anglePositiveVe) * (180 / Double.pi)
+        } else {
+            return fabs(angleNegativeVe) * (180 / Double.pi)
+        }
+    }
+    static func getPointOnHalfAngle(A : CLLocationCoordinate2D, B: CLLocationCoordinate2D, C: CLLocationCoordinate2D, distance: Double ) -> CLLocationCoordinate2D{
+
+        let angle = PolygonHelper.getAngleABOFromPoints(A: A, B: B, C: C) / 2.0
+        let dX =  distance * cos(angle * (Double.pi / 180.0))
+        let dY =  distance * sin(angle * (Double.pi / 180.0))
+        return CLLocationCoordinate2D(latitude: B.latitude + dY, longitude: B.longitude + dX)
+        
+    }
 }
 
 struct CLLocationCoordinatePositionInfo {
