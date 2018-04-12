@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ProSkoolLocaitonTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xDc-ao-4qy" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jmo-3v-gO0">
+                                <rect key="frame" x="0.0" y="537" width="375" height="130"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eog-GU-02V">
+                                        <rect key="frame" x="8" y="63.5" width="359" height="58.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="QH6-Hc-he2">
+                                                <rect key="frame" x="0.0" y="0.0" width="179.5" height="58.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance filter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m7g-Y5-4ve">
+                                                        <rect key="frame" x="0.0" y="0.0" width="179.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ns3-3X-H4x">
+                                                        <rect key="frame" x="0.0" y="28.5" width="179.5" height="30"/>
+                                                        <state key="normal" title="Distance Filter"/>
+                                                        <connections>
+                                                            <action selector="distanceFilerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bHo-7M-waT"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xWz-fa-Hbl">
+                                                <rect key="frame" x="179.5" y="0.0" width="179.5" height="58.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accuracy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6j8-yd-plu">
+                                                        <rect key="frame" x="0.0" y="0.0" width="179.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="04J-tE-3VK">
+                                                        <rect key="frame" x="0.0" y="28.5" width="179.5" height="30"/>
+                                                        <state key="normal" title="Desired Accuracy"/>
+                                                        <connections>
+                                                            <action selector="accuracyButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mIA-cU-LX6"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="25" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="1Sb-p5-hKs">
+                                        <rect key="frame" x="6" y="8" width="363" height="31"/>
+                                        <connections>
+                                            <action selector="sliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="iq9-ZW-5M6"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Radius - 25m" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ebK-AO-I93">
+                                        <rect key="frame" x="111.5" y="46" width="152" height="20.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="152" id="JcB-7r-kBp"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.46916605029585801" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="eog-GU-02V" secondAttribute="bottom" constant="8" id="1Cc-0L-eTd"/>
+                                    <constraint firstItem="ebK-AO-I93" firstAttribute="centerX" secondItem="jmo-3v-gO0" secondAttribute="centerX" id="5fi-oc-uu5"/>
+                                    <constraint firstItem="ebK-AO-I93" firstAttribute="top" secondItem="jmo-3v-gO0" secondAttribute="top" constant="46" id="D3q-ra-N2V"/>
+                                    <constraint firstItem="1Sb-p5-hKs" firstAttribute="leading" secondItem="jmo-3v-gO0" secondAttribute="leading" constant="8" id="D9b-Pn-fjA"/>
+                                    <constraint firstAttribute="trailing" secondItem="1Sb-p5-hKs" secondAttribute="trailing" constant="8" id="QhW-4k-YCu"/>
+                                    <constraint firstItem="1Sb-p5-hKs" firstAttribute="top" secondItem="jmo-3v-gO0" secondAttribute="top" constant="8" id="SzP-l3-DDU"/>
+                                    <constraint firstAttribute="height" constant="130" id="bJI-Bj-S5h"/>
+                                    <constraint firstAttribute="trailing" secondItem="eog-GU-02V" secondAttribute="trailing" constant="8" id="jyb-PC-VFE"/>
+                                    <constraint firstItem="eog-GU-02V" firstAttribute="leading" secondItem="jmo-3v-gO0" secondAttribute="leading" constant="8" id="rWg-ag-6Aa"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="jmo-3v-gO0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="9eh-MS-OSU"/>
+                            <constraint firstItem="xDc-ao-4qy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OJb-dG-Llw"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xDc-ao-4qy" secondAttribute="bottom" id="Rab-Yr-T1E"/>
+                            <constraint firstItem="xDc-ao-4qy" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fAY-qf-eXO"/>
+                            <constraint firstItem="jmo-3v-gO0" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fFE-Em-aye"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jmo-3v-gO0" secondAttribute="bottom" id="uX1-ed-dGT"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xDc-ao-4qy" secondAttribute="trailing" id="vXu-z9-IxW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="accuracyLabel" destination="6j8-yd-plu" id="on8-wI-Kcg"/>
+                        <outlet property="distanceFilterLabel" destination="m7g-Y5-4ve" id="cV2-WE-uem"/>
+                        <outlet property="mapView" destination="xDc-ao-4qy" id="CYZ-lN-YLt"/>
+                        <outlet property="radiusLabel" destination="ebK-AO-I93" id="kT8-a8-zdP"/>
+                        <outlet property="slider" destination="1Sb-p5-hKs" id="QeY-Nr-orM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="117.59999999999999" y="118.29085457271366"/>
+        </scene>
+    </scenes>
+</document>

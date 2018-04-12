@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		455FB193206E1728009C0E99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455FB192206E1728009C0E99 /* AppDelegate.swift */; };
+		455FB195206E1728009C0E99 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455FB194206E1728009C0E99 /* ViewController.swift */; };
+		455FB198206E1728009C0E99 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 455FB196206E1728009C0E99 /* Main.storyboard */; };
+		455FB19B206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 455FB199206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld */; };
+		455FB19D206E1728009C0E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 455FB19C206E1728009C0E99 /* Assets.xcassets */; };
+		455FB1A0206E1728009C0E99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 455FB19E206E1728009C0E99 /* LaunchScreen.storyboard */; };
+		45796BCC206E2344001B3439 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45796BCA206E2343001B3439 /* GoogleMaps.framework */; };
+		45796BCD206E2344001B3439 /* GoogleMapsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45796BCB206E2343001B3439 /* GoogleMapsCore.framework */; };
+		459584E4207F2A35004F3CD4 /* PolygonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459584E3207F2A35004F3CD4 /* PolygonHelper.swift */; };
+		6E584BD679F6DBB63442B9F2 /* Pods_ProSkoolLocaitonTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E3C183B7AF8C5B49507F41 /* Pods_ProSkoolLocaitonTest.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		43E3C183B7AF8C5B49507F41 /* Pods_ProSkoolLocaitonTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProSkoolLocaitonTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		455FB18F206E1728009C0E99 /* ProSkoolLocaitonTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProSkoolLocaitonTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		455FB192206E1728009C0E99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		455FB194206E1728009C0E99 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		455FB197206E1728009C0E99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		455FB19A206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProSkoolLocaitonTest.xcdatamodel; sourceTree = "<group>"; };
+		455FB19C206E1728009C0E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		455FB19F206E1728009C0E99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		455FB1A1206E1728009C0E99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		45796BCA206E2343001B3439 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.framework; sourceTree = "<group>"; };
+		45796BCB206E2343001B3439 /* GoogleMapsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMapsCore.framework; path = Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.framework; sourceTree = "<group>"; };
+		459584E3207F2A35004F3CD4 /* PolygonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonHelper.swift; sourceTree = "<group>"; };
+		95506CA550F1B9D1D817DA78 /* Pods-ProSkoolLocaitonTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProSkoolLocaitonTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProSkoolLocaitonTest/Pods-ProSkoolLocaitonTest.release.xcconfig"; sourceTree = "<group>"; };
+		ECA09AA8C76FEE5ABA659E16 /* Pods-ProSkoolLocaitonTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProSkoolLocaitonTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProSkoolLocaitonTest/Pods-ProSkoolLocaitonTest.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		455FB18C206E1728009C0E99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45796BCC206E2344001B3439 /* GoogleMaps.framework in Frameworks */,
+				45796BCD206E2344001B3439 /* GoogleMapsCore.framework in Frameworks */,
+				6E584BD679F6DBB63442B9F2 /* Pods_ProSkoolLocaitonTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C26B924E594FEAD3D2862C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45796BCA206E2343001B3439 /* GoogleMaps.framework */,
+				45796BCB206E2343001B3439 /* GoogleMapsCore.framework */,
+				43E3C183B7AF8C5B49507F41 /* Pods_ProSkoolLocaitonTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		455FB186206E1727009C0E99 = {
+			isa = PBXGroup;
+			children = (
+				455FB191206E1728009C0E99 /* ProSkoolLocaitonTest */,
+				455FB190206E1728009C0E99 /* Products */,
+				7BDBE6FDC09F4F6F843EA11C /* Pods */,
+				1C26B924E594FEAD3D2862C3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		455FB190206E1728009C0E99 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				455FB18F206E1728009C0E99 /* ProSkoolLocaitonTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		455FB191206E1728009C0E99 /* ProSkoolLocaitonTest */ = {
+			isa = PBXGroup;
+			children = (
+				455FB192206E1728009C0E99 /* AppDelegate.swift */,
+				455FB194206E1728009C0E99 /* ViewController.swift */,
+				455FB196206E1728009C0E99 /* Main.storyboard */,
+				455FB19C206E1728009C0E99 /* Assets.xcassets */,
+				455FB19E206E1728009C0E99 /* LaunchScreen.storyboard */,
+				455FB1A1206E1728009C0E99 /* Info.plist */,
+				455FB199206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld */,
+				459584E3207F2A35004F3CD4 /* PolygonHelper.swift */,
+			);
+			path = ProSkoolLocaitonTest;
+			sourceTree = "<group>";
+		};
+		7BDBE6FDC09F4F6F843EA11C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ECA09AA8C76FEE5ABA659E16 /* Pods-ProSkoolLocaitonTest.debug.xcconfig */,
+				95506CA550F1B9D1D817DA78 /* Pods-ProSkoolLocaitonTest.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		455FB18E206E1728009C0E99 /* ProSkoolLocaitonTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 455FB1A4206E1728009C0E99 /* Build configuration list for PBXNativeTarget "ProSkoolLocaitonTest" */;
+			buildPhases = (
+				919515D42D7375145AF57B01 /* [CP] Check Pods Manifest.lock */,
+				455FB18B206E1728009C0E99 /* Sources */,
+				455FB18C206E1728009C0E99 /* Frameworks */,
+				455FB18D206E1728009C0E99 /* Resources */,
+				8D11B7B476C897CA54F0DF24 /* [CP] Embed Pods Frameworks */,
+				5FAE2185160DDBF465974BC8 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ProSkoolLocaitonTest;
+			productName = ProSkoolLocaitonTest;
+			productReference = 455FB18F206E1728009C0E99 /* ProSkoolLocaitonTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		455FB187206E1727009C0E99 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Innofied Solution Pvt. Ltd.";
+				TargetAttributes = {
+					455FB18E206E1728009C0E99 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 455FB18A206E1727009C0E99 /* Build configuration list for PBXProject "ProSkoolLocaitonTest" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 455FB186206E1727009C0E99;
+			productRefGroup = 455FB190206E1728009C0E99 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				455FB18E206E1728009C0E99 /* ProSkoolLocaitonTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		455FB18D206E1728009C0E99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				455FB1A0206E1728009C0E99 /* LaunchScreen.storyboard in Resources */,
+				455FB19D206E1728009C0E99 /* Assets.xcassets in Resources */,
+				455FB198206E1728009C0E99 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5FAE2185160DDBF465974BC8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProSkoolLocaitonTest/Pods-ProSkoolLocaitonTest-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProSkoolLocaitonTest/Pods-ProSkoolLocaitonTest-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D11B7B476C897CA54F0DF24 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProSkoolLocaitonTest/Pods-ProSkoolLocaitonTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		919515D42D7375145AF57B01 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ProSkoolLocaitonTest-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		455FB18B206E1728009C0E99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				455FB195206E1728009C0E99 /* ViewController.swift in Sources */,
+				455FB193206E1728009C0E99 /* AppDelegate.swift in Sources */,
+				459584E4207F2A35004F3CD4 /* PolygonHelper.swift in Sources */,
+				455FB19B206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		455FB196206E1728009C0E99 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				455FB197206E1728009C0E99 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		455FB19E206E1728009C0E99 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				455FB19F206E1728009C0E99 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		455FB1A2206E1728009C0E99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		455FB1A3206E1728009C0E99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		455FB1A5206E1728009C0E99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECA09AA8C76FEE5ABA659E16 /* Pods-ProSkoolLocaitonTest.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2PL4SYCK36;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/GoogleMaps/Maps/Frameworks",
+				);
+				INFOPLIST_FILE = ProSkoolLocaitonTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.innofied.ProSkoolLocaitonTest.ProSkoolLocaitonTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		455FB1A6206E1728009C0E99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 95506CA550F1B9D1D817DA78 /* Pods-ProSkoolLocaitonTest.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2PL4SYCK36;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/GoogleMaps/Maps/Frameworks",
+				);
+				INFOPLIST_FILE = ProSkoolLocaitonTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.innofied.ProSkoolLocaitonTest.ProSkoolLocaitonTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		455FB18A206E1727009C0E99 /* Build configuration list for PBXProject "ProSkoolLocaitonTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				455FB1A2206E1728009C0E99 /* Debug */,
+				455FB1A3206E1728009C0E99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		455FB1A4206E1728009C0E99 /* Build configuration list for PBXNativeTarget "ProSkoolLocaitonTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				455FB1A5206E1728009C0E99 /* Debug */,
+				455FB1A6206E1728009C0E99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		455FB199206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				455FB19A206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodel */,
+			);
+			currentVersion = 455FB19A206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodel */;
+			path = ProSkoolLocaitonTest.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 455FB187206E1727009C0E99 /* Project object */;
+}

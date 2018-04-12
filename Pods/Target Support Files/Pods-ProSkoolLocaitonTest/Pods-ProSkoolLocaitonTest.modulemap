@@ -1,0 +1,6 @@
+framework module Pods_ProSkoolLocaitonTest {
+  umbrella header "Pods-ProSkoolLocaitonTest-umbrella.h"
+
+  export *
+  module * { export * }
+}
