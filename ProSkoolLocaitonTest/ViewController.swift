@@ -67,6 +67,8 @@ class ViewController: UIViewController {
     var safeRoutePolylineRef2: GMSPolyline?
     var isDraggingGoingOn: Bool = false
     
+    var safeRoutePolygons = [GMSPolygon]()
+    
     var halfAngleMarker:GMSMarker?
     
     
@@ -112,27 +114,23 @@ class ViewController: UIViewController {
         circle.radius = Double(sender.value)
     }
     
-    func drawOverlayCoveringMarkers(markers: [GMSMarker]) {
+    func drawOverlayCoveringMarkers(markers: [CLLocationCoordinate2D]) -> GMSPolygon {
         
         // Create a rectangular path
         let rect = GMSMutablePath()
-        let oldPositions = markers.map ({ $0.position })
-        let newPosition = PolygonHelper.getClockWiseSequenceFromCoordinateArray(cordinates: oldPositions)
-        for coordinate in newPosition {
-            rect.add(CLLocationCoordinate2D(latitude: coordinate.latitude, longitude:  coordinate.longitude))
+        let oldPositions = markers
+        //let newPosition = PolygonHelper.getClockWiseSequenceFromCoordinateArray(cordinates: oldPositions)
+        for coordinate in oldPositions {
+            rect.add(coordinate)
         }
         
-        if let oldPolygon = safeAreaPolygon {
-            oldPolygon.map = nil
-            
-        } else {
-            
-        }
-        safeAreaPolygon = GMSPolygon(path: rect)
-        safeAreaPolygon?.strokeWidth = 1.0
-        safeAreaPolygon?.strokeColor = .black
-        safeAreaPolygon?.fillColor = UIColor.black.withAlphaComponent(0.2)
-        safeAreaPolygon?.map = mapView
+        let polygon = GMSPolygon(path: rect)
+        polygon.strokeWidth = 1.0
+        polygon.strokeColor = .black
+        polygon.fillColor = UIColor.black.withAlphaComponent(0.2)
+        polygon.map = mapView
+        
+        return polygon
         
     }
     func drawPolyline(path: GMSPath, color: UIColor) -> GMSPolyline {
@@ -141,46 +139,7 @@ class ViewController: UIViewController {
         line.strokeWidth = 2.0
         return line
     }
-    
-    func drawPolyLines(markers: [GMSMarker]) {
-        
-        let rect = GMSMutablePath()
-        
-        for coordinate in markers.map ({ $0.position }) {
-            rect.add(CLLocationCoordinate2D(latitude: coordinate.latitude, longitude:  coordinate.longitude))
-        }
-        
-        if let line = safeRoutePolyline {
-            line.map = nil
-            safeRoutePolyline = drawPolyline(path: rect, color: .black)
-            safeRoutePolyline?.map = self.mapView
-        } else {
-            safeRoutePolyline = drawPolyline(path: rect, color: .black)
-            safeRoutePolyline?.map = self.mapView
-        }
-        
-        let ref1 = rect.pathOffset(byLatitude: 0.25, longitude: 0.25)
-        
-        if let line = safeRoutePolylineRef1 {
-            line.map = nil
-            safeRoutePolylineRef1 = drawPolyline(path: ref1, color: .black)
-            safeRoutePolylineRef1?.map = self.mapView
-        } else {
-            safeRoutePolylineRef1 = drawPolyline(path: ref1, color: .black)
-            safeRoutePolylineRef1?.map = self.mapView
-        }
-        
-        let ref2 = rect.pathOffset(byLatitude: -0.25, longitude: -0.25)
-        if let line = safeRoutePolylineRef2 {
-            line.map = nil
-            safeRoutePolylineRef2 = drawPolyline(path: ref2, color: .black)
-            safeRoutePolylineRef2?.map = self.mapView
-        } else {
-            safeRoutePolylineRef2 = drawPolyline(path: ref2, color: .black)
-            safeRoutePolylineRef2?.map = self.mapView
-        }
-        
-    }
+
     
     private func presentLocationAccuracyOptions() {
         
@@ -259,6 +218,7 @@ class ViewController: UIViewController {
 extension ViewController : GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
         if isDraggingGoingOn { return }
+        
         // Create a new marker
         let newMarker = GMSMarker(position: coordinate)
         newMarker.isDraggable = true
@@ -266,14 +226,27 @@ extension ViewController : GMSMapViewDelegate {
         newMarker.map = self.mapView
         arrayOfPlacedMarkers.append(newMarker)
         
-        if arrayOfPlacedMarkers.count > 2 {
-            //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
+        drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
+        
+        
+    }
+    func drawSafeRouteGoingThroughMarkers(markers: [GMSMarker])  {
+        // removing all polygons
+        for oldPolygon in safeRoutePolygons {
+            oldPolygon.map = nil
+        }
+        safeRoutePolygons = [GMSPolygon]()
+        
+        if arrayOfPlacedMarkers.count > 1 {
+            //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers.map { $0.position})
             //drawPolyLines(markers: arrayOfPlacedMarkers)
-            drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
-
+            //drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
+            for i in 0..<arrayOfPlacedMarkers.count - 1 {
+                let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position, B: arrayOfPlacedMarkers[i + 1].position)
+                safeRoutePolygons.append(drawOverlayCoveringMarkers(markers: points))
+            }
         }
     }
-    
     func drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: [GMSMarker]) {
         if let safeRoutePolyline = self.safeRoutePolyline {
             safeRoutePolyline.map = nil
@@ -301,17 +274,18 @@ extension ViewController : GMSMapViewDelegate {
         if marker == currentLocationMarker { return }
         
         //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
-        drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
+        //drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
         
         
     }
     func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
         isDraggingGoingOn = false
         if marker == currentLocationMarker { return }
+        drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        print(arrayOfPlacedMarkers.index(of: marker))
+        //print(marker.title)
         return true
     }
 

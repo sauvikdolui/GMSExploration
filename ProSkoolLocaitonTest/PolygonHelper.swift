@@ -69,6 +69,51 @@ class PolygonHelper {
         return CLLocationCoordinate2D(latitude: B.latitude + dY, longitude: B.longitude + dX)
         
     }
+    static func getCoveringPointsFor(A: CLLocationCoordinate2D, B: CLLocationCoordinate2D) -> [CLLocationCoordinate2D] {
+        
+        let distance = 0.0001
+        
+        if (A.longitude - B.longitude) == 0 {
+            // Perpendicular to X +ve axis
+            let ALeft = CLLocationCoordinate2D(latitude: A.latitude, longitude: A.longitude - distance)
+            let ARight = CLLocationCoordinate2D(latitude: A.latitude, longitude: A.longitude + distance)
+            
+            let BLeft = CLLocationCoordinate2D(latitude: B.latitude, longitude: B.longitude - distance)
+            let BRight = CLLocationCoordinate2D(latitude: B.latitude, longitude: B.longitude + distance)
+            
+            return [ALeft, ARight, BLeft, BRight ]
+        } else  {
+            let m = (A.latitude - B.latitude) / (A.longitude - B.longitude)
+            
+            if  m > 0 {
+                // Making < 90 angle
+                let angle = 90.0 - atan(m) * (180.0 / Double.pi)
+                let dx = distance * cos(angle * (Double.pi / 180.0))
+                let dy = distance * sin(angle * (Double.pi / 180.0))
+                let ALeft = CLLocationCoordinate2D(latitude: A.latitude + dy, longitude: A.longitude - dx)
+                let ARight = CLLocationCoordinate2D(latitude: A.latitude - dy, longitude: A.longitude + dx)
+                
+                let BLeft = CLLocationCoordinate2D(latitude: B.latitude + dy, longitude: B.longitude - dx)
+                let BRight = CLLocationCoordinate2D(latitude: B.latitude - dy, longitude: B.longitude + dx)
+                
+                return [ALeft, ARight, BRight, BLeft]
+            } else {
+                // Making > 90 angle
+                let angle = 90.0 - atan(m) * (180.0 / Double.pi)
+                let dx = distance * cos(angle * (Double.pi / 180.0))
+                let dy = distance * sin(angle * (Double.pi / 180.0))
+                let ALeft = CLLocationCoordinate2D(latitude: A.latitude - dy, longitude: A.longitude - dx)
+                let ARight = CLLocationCoordinate2D(latitude: A.latitude + dy, longitude: A.longitude + dx)
+                
+                let BLeft = CLLocationCoordinate2D(latitude: B.latitude - dy, longitude: B.longitude - dx)
+                let BRight = CLLocationCoordinate2D(latitude: B.latitude + dy, longitude: B.longitude + dx)
+                
+                return [ALeft, ARight, BRight, BLeft]
+            }
+        }
+        return [CLLocationCoordinate2D]()
+    }
+    
 }
 
 struct CLLocationCoordinatePositionInfo {

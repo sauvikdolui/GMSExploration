@@ -6,6 +6,7 @@ target 'ProSkoolLocaitonTest' do
   use_frameworks!
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'GEOSwift'
 
   # Pods for ProSkoolLocaitonTest
 
