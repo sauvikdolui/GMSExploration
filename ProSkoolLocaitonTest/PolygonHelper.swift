@@ -74,7 +74,7 @@ class PolygonHelper {
         let distance = 0.0001
         
         if (A.longitude - B.longitude) == 0 {
-            // Perpendicular to X +ve axis
+            // Perpendicular to Y axis
             let ALeft = CLLocationCoordinate2D(latitude: A.latitude, longitude: A.longitude - distance)
             let ARight = CLLocationCoordinate2D(latitude: A.latitude, longitude: A.longitude + distance)
             
@@ -86,8 +86,9 @@ class PolygonHelper {
             let m = (A.latitude - B.latitude) / (A.longitude - B.longitude)
             
             if  m > 0 {
-                // Making < 90 angle
+                // Making > 0 && < 90 angle
                 let angle = 90.0 - atan(m) * (180.0 / Double.pi)
+                print("angle =\(angle)")
                 let dx = distance * cos(angle * (Double.pi / 180.0))
                 let dy = distance * sin(angle * (Double.pi / 180.0))
                 let ALeft = CLLocationCoordinate2D(latitude: A.latitude + dy, longitude: A.longitude - dx)
@@ -99,11 +100,12 @@ class PolygonHelper {
                 return [ALeft, ARight, BRight, BLeft]
             } else {
                 // Making > 90 angle
-                let angle = 90.0 - atan(m) * (180.0 / Double.pi)
+                let angle = 90 + atan(m) * (180.0 / Double.pi)
                 let dx = distance * cos(angle * (Double.pi / 180.0))
                 let dy = distance * sin(angle * (Double.pi / 180.0))
+                
                 let ALeft = CLLocationCoordinate2D(latitude: A.latitude - dy, longitude: A.longitude - dx)
-                let ARight = CLLocationCoordinate2D(latitude: A.latitude + dy, longitude: A.longitude + dx)
+                let ARight = CLLocationCoordinate2D(latitude: A.latitude  + dy, longitude: A.longitude + dx)
                 
                 let BLeft = CLLocationCoordinate2D(latitude: B.latitude - dy, longitude: B.longitude - dx)
                 let BRight = CLLocationCoordinate2D(latitude: B.latitude + dy, longitude: B.longitude + dx)
@@ -111,7 +113,6 @@ class PolygonHelper {
                 return [ALeft, ARight, BRight, BLeft]
             }
         }
-        return [CLLocationCoordinate2D]()
     }
     
 }
