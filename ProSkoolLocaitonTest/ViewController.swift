@@ -232,7 +232,7 @@ extension ViewController : GMSMapViewDelegate {
         arrayOfPlacedMarkers.append(newMarker)
         
         if arrayOfPlacedMarkers.count > 1 {
-            drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
+            //drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
             
             
             
@@ -242,17 +242,23 @@ extension ViewController : GMSMapViewDelegate {
                 unionPolygon?.map = nil
                 unionPolygon = nil
             }
-            guard var finalPolygon = Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray.first!) as? Polygon else {
+            for i in 0..<arrayOfPlacedMarkers.count - 1 {
+                let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position,
+                                                                B: arrayOfPlacedMarkers[i + 1].position)
+                polygonPointsArray.append(points)
+            }
+            guard var finalPolygon = Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray.first!) else {
                 return
             }
             // Incremental union
             for i in 1..<polygonPointsArray.count {
                 let thisPolygon =  Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray[i])
-                finalPolygon = (finalPolygon.union(thisPolygon as! Polygon) as! Polygon)
+                finalPolygon = finalPolygon.union(thisPolygon!) as! Polygon
             }
             
             let pathOfFinalPolygon = GMSMutablePath(polygon: finalPolygon)
             unionPolygon = GMSPolygon(path: pathOfFinalPolygon)
+            unionPolygon?.strokeWidth = 1.0
             unionPolygon?.strokeColor = .red
             unionPolygon?.fillColor = UIColor.green.withAlphaComponent(0.2)
             unionPolygon?.map = mapView

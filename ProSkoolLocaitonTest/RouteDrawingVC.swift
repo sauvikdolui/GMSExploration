@@ -141,7 +141,6 @@ extension RouteDrawingVC: CLLocationManagerDelegate {
 extension GMSMutablePath {
     convenience public init(polygon: Polygon) {
         self.init()
-        // TODO: Extract Coordinate Point from Polygon and create the path
         for location in polygon.exteriorRing.points{
             add(CLLocationCoordinate2DFromCoordinate(location))
         }
@@ -157,10 +156,16 @@ extension Geometry {
         
         return Geometry.create(finalString)
     }
-    class func createPolygonFrom(polygonCoordinates: [CLLocationCoordinate2D]) -> Geometry? {
-        let coordinatePairs = polygonCoordinates.map { "\($0.latitude) \($0.longitude)" }.joined(separator: ", ")
-        let finalString = "POLYGON((\(coordinatePairs)), (0.0 0.0, 0.0 0.0))"
-        return Geometry.create(finalString)
+    class func createPolygonFrom(polygonCoordinates: [CLLocationCoordinate2D]) -> Polygon? {
+        var circularRing:[CLLocationCoordinate2D] = polygonCoordinates
+        circularRing.append(polygonCoordinates.first!)
+
+        let coordinateArray = circularRing.map { Coordinate(x: $0.longitude, y: $0.latitude)}
+        
+        guard let linerRing = LinearRing(points: coordinateArray) else {
+            return nil
+        }
+        return Polygon(shell: linerRing, holes: nil)
     }
 }
 
