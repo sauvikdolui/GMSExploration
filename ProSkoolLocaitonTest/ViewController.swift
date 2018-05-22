@@ -63,6 +63,8 @@ class ViewController: UIViewController {
     var arrayOfPlacedMarkers = [GMSMarker]()
     var safeAreaPolygon: GMSPolygon?
     var safeRoutePolyline: GMSPolyline?
+    var unionPolygon: GMSPolygon?
+
     var safeRoutePolylineRef1: GMSPolyline?
     var safeRoutePolylineRef2: GMSPolyline?
     var isDraggingGoingOn: Bool = false
@@ -73,6 +75,8 @@ class ViewController: UIViewController {
     
     
     let distanceFilterOptions = [kCLDistanceFilterNone, 5.0, 10.0, 20.0, 30.0, 50.0, 75.0, 100.0, 200.0, 500.0, 1000.0 ]
+    
+    var polygonPointsArray:[[CLLocationCoordinate2D]] = [[CLLocationCoordinate2D]]()
     
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var accuracyLabel: UILabel!
@@ -227,7 +231,33 @@ extension ViewController : GMSMapViewDelegate {
         newMarker.map = self.mapView
         arrayOfPlacedMarkers.append(newMarker)
         
-        drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
+        if arrayOfPlacedMarkers.count > 1 {
+            drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
+            
+            
+            
+            // TODO: polygonPointsArray
+            // Make union from drawSafeRouteGoingThroughMarkers
+            if unionPolygon != nil {
+                unionPolygon?.map = nil
+                unionPolygon = nil
+            }
+            guard var finalPolygon = Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray.first!) as? Polygon else {
+                return
+            }
+            // Incremental union
+            for i in 1..<polygonPointsArray.count {
+                let thisPolygon =  Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray[i])
+                finalPolygon = (finalPolygon.union(thisPolygon as! Polygon) as! Polygon)
+            }
+            
+            let pathOfFinalPolygon = GMSMutablePath(polygon: finalPolygon)
+            unionPolygon = GMSPolygon(path: pathOfFinalPolygon)
+            unionPolygon?.strokeColor = .red
+            unionPolygon?.fillColor = UIColor.green.withAlphaComponent(0.2)
+            unionPolygon?.map = mapView
+        }
+
         
         
     }
@@ -242,8 +272,11 @@ extension ViewController : GMSMapViewDelegate {
             //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers.map { $0.position})
             //drawPolyLines(markers: arrayOfPlacedMarkers)
             //drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
+            polygonPointsArray = []
             for i in 0..<arrayOfPlacedMarkers.count - 1 {
-                let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position, B: arrayOfPlacedMarkers[i + 1].position)
+                let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position,
+                                                                B: arrayOfPlacedMarkers[i + 1].position)
+                polygonPointsArray.append(points)
                 safeRoutePolygons.append(drawOverlayCoveringMarkers(markers: points))
             }
         }
@@ -317,8 +350,6 @@ extension ViewController: CLLocationManagerDelegate {
             fenceCircle?.map = mapView
         }
         fenceCircle?.position = locaiton.coordinate
-
-        
         currentLocationMarker.appearAnimation = .pop
         currentLocationMarker.position = locaiton.coordinate
         currentLocationMarker.map = self.mapView

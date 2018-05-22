@@ -157,6 +157,11 @@ extension Geometry {
         
         return Geometry.create(finalString)
     }
+    class func createPolygonFrom(polygonCoordinates: [CLLocationCoordinate2D]) -> Geometry? {
+        let coordinatePairs = polygonCoordinates.map { "\($0.latitude) \($0.longitude)" }.joined(separator: ", ")
+        let finalString = "POLYGON((\(coordinatePairs)), (0.0 0.0, 0.0 0.0))"
+        return Geometry.create(finalString)
+    }
 }
 
 
