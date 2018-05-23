@@ -10,6 +10,17 @@ import Foundation
 import MapKit
 import GoogleMaps
 
+
+extension CLLocationCoordinate2D: Comparable {
+    public static func < (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        return lhs.latitude < rhs.latitude && lhs.longitude < rhs.longitude
+    }
+    
+    public static func ==(lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}
+
 class PolygonHelper {
     
     class func getClockWiseSequenceFromCoordinateArray(cordinates: [CLLocationCoordinate2D]) ->  [CLLocationCoordinate2D] {
@@ -73,15 +84,43 @@ class PolygonHelper {
         
         let distance = 0.0001
         
-        if (A.longitude - B.longitude) == 0 {
-            // Perpendicular to Y axis
-            let ALeft = CLLocationCoordinate2D(latitude: A.latitude, longitude: A.longitude - distance)
-            let ARight = CLLocationCoordinate2D(latitude: A.latitude, longitude: A.longitude + distance)
+        if (A.longitude - B.longitude) == 0 && A != B {
+            // Both residing on a line parallel to X Axis
+            var leftOfAB = A.latitude <= B.latitude ? A : B
+            var rightOfAB = A.latitude > B.latitude ? A : B
             
-            let BLeft = CLLocationCoordinate2D(latitude: B.latitude, longitude: B.longitude - distance)
-            let BRight = CLLocationCoordinate2D(latitude: B.latitude, longitude: B.longitude + distance)
+            leftOfAB = CLLocationCoordinate2D(latitude: leftOfAB.latitude - distance, longitude: leftOfAB.longitude)
+            rightOfAB = CLLocationCoordinate2D(latitude: rightOfAB.latitude + distance, longitude: rightOfAB.longitude)
             
-            return [ALeft, ARight, BLeft, BRight ]
+            
+            let ATop = CLLocationCoordinate2D(latitude: leftOfAB.latitude, longitude: leftOfAB.longitude + distance)
+            let ABottom = CLLocationCoordinate2D(latitude: leftOfAB.latitude, longitude: leftOfAB.longitude - distance)
+            
+            let BTop = CLLocationCoordinate2D(latitude: rightOfAB.latitude, longitude: rightOfAB.longitude + distance)
+            let BBottom = CLLocationCoordinate2D(latitude: rightOfAB.latitude, longitude: rightOfAB.longitude - distance)
+            
+            return [ATop, ABottom, BBottom, BTop ]
+        } else if (A.latitude - B.latitude) == 0 {
+            // Both residing on a line parallel to Y Axis
+            var bottomOfAB = A.longitude <= B.longitude ? A : B
+            var topOfAB = A.longitude > B.longitude ? A : B
+            
+            bottomOfAB = CLLocationCoordinate2D(latitude: bottomOfAB.latitude,
+                                                longitude: bottomOfAB.longitude - distance)
+            topOfAB = CLLocationCoordinate2D(latitude: topOfAB.latitude,
+                                             longitude: topOfAB.longitude + distance)
+            
+            let topLeft = CLLocationCoordinate2D(latitude: topOfAB.latitude - distance,
+                                                 longitude: topOfAB.longitude)
+            let topRight = CLLocationCoordinate2D(latitude: topOfAB.latitude + distance,
+                                                  longitude: topOfAB.longitude)
+            
+            let bottomLeft = CLLocationCoordinate2D(latitude: bottomOfAB.latitude - distance,
+                                                    longitude: bottomOfAB.longitude)
+            let bottomRight = CLLocationCoordinate2D(latitude: bottomOfAB.latitude + distance,
+                                                     longitude: bottomOfAB.longitude)
+            
+            return [topLeft, topRight, bottomRight, bottomLeft]
         } else  {
             let m = (A.latitude - B.latitude) / (A.longitude - B.longitude)
             
@@ -91,11 +130,13 @@ class PolygonHelper {
                 print("angle =\(angle)")
                 let dx = distance * cos(angle * (Double.pi / 180.0))
                 let dy = distance * sin(angle * (Double.pi / 180.0))
-                let ALeft = CLLocationCoordinate2D(latitude: A.latitude + dy, longitude: A.longitude - dx)
-                let ARight = CLLocationCoordinate2D(latitude: A.latitude - dy, longitude: A.longitude + dx)
                 
-                let BLeft = CLLocationCoordinate2D(latitude: B.latitude + dy, longitude: B.longitude - dx)
-                let BRight = CLLocationCoordinate2D(latitude: B.latitude - dy, longitude: B.longitude + dx)
+                let (updatedA, updatedB) = PolygonHelper.getDistanceAddedPoints(A: A, B: B, distance: distance)
+                let ALeft = CLLocationCoordinate2D(latitude: updatedA.latitude + dy, longitude: updatedA.longitude - dx)
+                let ARight = CLLocationCoordinate2D(latitude: updatedA.latitude - dy, longitude: updatedA.longitude + dx)
+                
+                let BLeft = CLLocationCoordinate2D(latitude: updatedB.latitude + dy, longitude: updatedB.longitude - dx)
+                let BRight = CLLocationCoordinate2D(latitude: updatedB.latitude - dy, longitude: updatedB.longitude + dx)
                 
                 return [ALeft, ARight, BRight, BLeft]
             } else {
@@ -104,16 +145,58 @@ class PolygonHelper {
                 let dx = distance * cos(angle * (Double.pi / 180.0))
                 let dy = distance * sin(angle * (Double.pi / 180.0))
                 
-                let ALeft = CLLocationCoordinate2D(latitude: A.latitude - dy, longitude: A.longitude - dx)
-                let ARight = CLLocationCoordinate2D(latitude: A.latitude  + dy, longitude: A.longitude + dx)
+                let (updatedA, updatedB) = PolygonHelper.getDistanceAddedPoints(A: A, B: B, distance: distance)
+
+                let ALeft = CLLocationCoordinate2D(latitude: updatedA.latitude - dy, longitude: updatedA.longitude - dx)
+                let ARight = CLLocationCoordinate2D(latitude: updatedA.latitude  + dy, longitude: updatedA.longitude + dx)
                 
-                let BLeft = CLLocationCoordinate2D(latitude: B.latitude - dy, longitude: B.longitude - dx)
-                let BRight = CLLocationCoordinate2D(latitude: B.latitude + dy, longitude: B.longitude + dx)
+                let BLeft = CLLocationCoordinate2D(latitude: updatedB.latitude - dy, longitude: updatedB.longitude - dx)
+                let BRight = CLLocationCoordinate2D(latitude: updatedB.latitude + dy, longitude: updatedB.longitude + dx)
                 
                 return [ALeft, ARight, BRight, BLeft]
             }
         }
     }
+    
+    static func getDistanceAddedPoints(A: CLLocationCoordinate2D,
+                                       B: CLLocationCoordinate2D,
+                                       distance: Double) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
+        
+        let m = (A.latitude - B.latitude) / (A.longitude - B.longitude)
+        
+        if m > 0 {
+            // making  > 0 & < 90 angle with +ve X-Axis
+            let topPoint = A.longitude > B.longitude ? A : B
+            let bottomPoint = A.longitude < B.longitude ? A : B
+            
+            let angle = 90.0 - atan(m) * (180.0 / Double.pi)
+            let dx = distance * cos(angle * (Double.pi / 180.0))
+            let dy = distance * sin(angle * (Double.pi / 180.0))
+
+            
+            let updatedTop = CLLocationCoordinate2D(latitude: topPoint.latitude + dx,
+                                                    longitude: topPoint.longitude + dy)
+            let updatedBottom = CLLocationCoordinate2D(latitude: bottomPoint.latitude - dx,
+                                                    longitude: bottomPoint.longitude - dy)
+            return (updatedTop, updatedBottom)
+        } else {
+            // making  > 0 & > 90 angle with +ve X-Axis
+            
+            let topPoint = A.longitude > B.longitude ? A : B
+            let bottomPoint = A.longitude < B.longitude ? A : B
+            
+            let angle = 90 + atan(m) * (180.0 / Double.pi)
+            let dx = distance * cos(angle * (Double.pi / 180.0))
+            let dy = distance * sin(angle * (Double.pi / 180.0))
+            
+            let updatedTop = CLLocationCoordinate2D(latitude: topPoint.latitude - dx,
+                                                    longitude: topPoint.longitude + dy)
+            let updatedBottom = CLLocationCoordinate2D(latitude: bottomPoint.latitude + dx,
+                                                       longitude: bottomPoint.longitude - dy)
+            return (updatedTop, updatedBottom)
+        }
+        
+        }
     
 }
 

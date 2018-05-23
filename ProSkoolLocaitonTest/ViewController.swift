@@ -231,17 +231,16 @@ extension ViewController : GMSMapViewDelegate {
         newMarker.map = self.mapView
         arrayOfPlacedMarkers.append(newMarker)
         
+        drawSafeRouteGoingThroughMarkers(markers: arrayOfPlacedMarkers)
+
+        
+        
+    }
+    func drawSafeRouteGoingThroughMarkers(markers: [GMSMarker])  {
         if arrayOfPlacedMarkers.count > 1 {
-            //drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
             
-            
-            
-            // TODO: polygonPointsArray
-            // Make union from drawSafeRouteGoingThroughMarkers
-            if unionPolygon != nil {
-                unionPolygon?.map = nil
-                unionPolygon = nil
-            }
+            unionPolygon?.map = nil
+            unionPolygon = nil
             for i in 0..<arrayOfPlacedMarkers.count - 1 {
                 let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position,
                                                                 B: arrayOfPlacedMarkers[i + 1].position)
@@ -259,32 +258,9 @@ extension ViewController : GMSMapViewDelegate {
             let pathOfFinalPolygon = GMSMutablePath(polygon: finalPolygon)
             unionPolygon = GMSPolygon(path: pathOfFinalPolygon)
             unionPolygon?.strokeWidth = 1.0
-            unionPolygon?.strokeColor = .red
+            unionPolygon?.strokeColor = .black
             unionPolygon?.fillColor = UIColor.green.withAlphaComponent(0.2)
             unionPolygon?.map = mapView
-        }
-
-        
-        
-    }
-    func drawSafeRouteGoingThroughMarkers(markers: [GMSMarker])  {
-        // removing all polygons
-        for oldPolygon in safeRoutePolygons {
-            oldPolygon.map = nil
-        }
-        safeRoutePolygons = [GMSPolygon]()
-        
-        if arrayOfPlacedMarkers.count > 1 {
-            //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers.map { $0.position})
-            //drawPolyLines(markers: arrayOfPlacedMarkers)
-            //drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
-            polygonPointsArray = []
-            for i in 0..<arrayOfPlacedMarkers.count - 1 {
-                let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position,
-                                                                B: arrayOfPlacedMarkers[i + 1].position)
-                polygonPointsArray.append(points)
-                safeRoutePolygons.append(drawOverlayCoveringMarkers(markers: points))
-            }
         }
     }
     func drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: [GMSMarker]) {
@@ -315,13 +291,14 @@ extension ViewController : GMSMapViewDelegate {
         
         //drawOverlayCoveringMarkers(markers: arrayOfPlacedMarkers)
         //drawSafeZoneCoveringPoints(arrayOfPlacedMarkers: arrayOfPlacedMarkers)
+        //drawSafeRouteGoingThroughMarkers(markers: arrayOfPlacedMarkers)
         
         
     }
     func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
         isDraggingGoingOn = false
         if marker == currentLocationMarker { return }
-        drawSafeRouteGoingThroughMarkers(markers: self.arrayOfPlacedMarkers)
+        drawSafeRouteGoingThroughMarkers(markers: arrayOfPlacedMarkers)
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
