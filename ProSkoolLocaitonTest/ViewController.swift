@@ -241,6 +241,7 @@ extension ViewController : GMSMapViewDelegate {
             
             unionPolygon?.map = nil
             unionPolygon = nil
+            polygonPointsArray = []
             for i in 0..<arrayOfPlacedMarkers.count - 1 {
                 let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position,
                                                                 B: arrayOfPlacedMarkers[i + 1].position)
