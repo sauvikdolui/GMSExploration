@@ -22,10 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey("AIzaSyC6aXmWtJCFigzt8yvD9gFgPAVCJWgqeto")
         
-        let A = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
-        let B = CLLocationCoordinate2D(latitude: 1.0, longitude: 0.0)
-        let C = CLLocationCoordinate2D(latitude: 0.0, longitude: 1.0)
-        print(PolygonHelper.getAngleABOFromPoints(A: A, B: B, C: C))
         return true
     }
 
