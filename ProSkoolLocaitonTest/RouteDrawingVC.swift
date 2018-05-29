@@ -16,26 +16,20 @@ class RouteDrawingVC: UIViewController {
 
     @IBOutlet weak var mapView: GMSMapView!
     
-    
+    // Location Manager
     var locationManager =  CLLocationManager()
+    
+    // Current Location
     var currentLocationMarker = GMSMarker()
     var currentLocationCoordinate: CLLocationCoordinate2D?
+    
+    // Safe route properties
     var arrayOfPlacedMarkers = [GMSMarker]()
-    var safeRoutePolyline: GMSPolygon?
-
-    // // LINESTRING(35 10, 45 45, 15 40, 10 20, 35 10)
-    let xCoordinates:[Double] = [35, 45, 15, 10]
-    let yCoordinates:[Double] = [10, 45, 40, 20]
+    var isDraggingGoingOn: Bool = false
+    var unionPolygon: GMSPolygon?
+    var polygonPointsArray:[[CLLocationCoordinate2D]] = [[CLLocationCoordinate2D]]()
     
-    lazy var debugCoordinates: [CLLocationCoordinate2D] = {
-        var coordinates = [CLLocationCoordinate2D]()
-        for i in 0..<xCoordinates.count {
-            coordinates.append(CLLocationCoordinate2D(latitude: xCoordinates[i],
-                                                      longitude: yCoordinates[i]))
-        }
-        return coordinates
-    }()
-    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,9 +41,6 @@ class RouteDrawingVC: UIViewController {
         locationManager.distanceFilter = kCLDistanceFilterNone
         mapView.delegate = self
         locationManager.startUpdatingLocation()
-        
-        //drawRouteOverlayFromCoordinates(coordinates: debugCoordinates)
-        //addMarkersAtCoordinates(coordinates: debugCoordinates)
 
     }
 
@@ -57,65 +48,102 @@ class RouteDrawingVC: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func drawRouteOverlayFromCoordinates(coordinates: [CLLocationCoordinate2D], buffer: Double = 0.0001) {
-        
-        let lineStringGeometry = Geometry.createFrom(linePathCoordinates: coordinates)
-        let bufferedPath = lineStringGeometry?.buffer(width: buffer) as! Polygon
-        
-        let mutableGMSPolyline = GMSMutablePath(polygon: bufferedPath)
-        
-        // Removing the old one before creating a new
-        if safeRoutePolyline != nil {
-            safeRoutePolyline?.map = nil
-            safeRoutePolyline = nil
-        }
-        
-        // Polyline drawing
-        safeRoutePolyline = GMSPolygon(path: mutableGMSPolyline)
-        safeRoutePolyline?.strokeWidth = 1.0
-        safeRoutePolyline?.strokeColor = .black
-        safeRoutePolyline?.fillColor = UIColor.black.withAlphaComponent(0.2)
-        safeRoutePolyline?.map = mapView
+
+    @IBAction func backButtonTapped(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
     }
-    func addMarkersAtCoordinates(coordinates: [CLLocationCoordinate2D]) {
-        for coordinate in coordinates {
-            let newMarker = GMSMarker(position: coordinate)
-            newMarker.isDraggable = true
-            newMarker.appearAnimation = .pop
-            newMarker.map = self.mapView
+    
+    /// Draws a safe route covering the markers
+    ///
+    /// - Parameter markers: An array of markers in a sequence which will be acting as
+    ///                      the turning points of the route we are going to draw
+    func drawSafeRouteGoingThroughMarkers(markers: [GMSMarker])  {
+        
+        if arrayOfPlacedMarkers.count > 1 {
+            
+            // No of markers > 1, at least 2 can draw a route
+            
+            // Clean up
+            unionPolygon?.map = nil
+            unionPolygon = nil
+            polygonPointsArray = []
+            
+            
+            // Calculating a siglen rectangle( unit of polygon) covering two marker a time
+            for i in 0..<arrayOfPlacedMarkers.count - 1 {
+                let points = PolygonHelper.getCoveringPointsFor(A: arrayOfPlacedMarkers[i].position,
+                                                                B: arrayOfPlacedMarkers[i + 1].position)
+                polygonPointsArray.append(points)
+            }
+            
+            // Creating the first Polygon <--- Geometry
+            guard var finalPolygon = Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray.first!) else {
+                return
+            }
+            
+            // Incremental union: Union of n - 1 polygons with the help of GeoSwift
+            for i in 1..<polygonPointsArray.count {
+                let thisPolygon =  Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray[i])
+                finalPolygon = finalPolygon.union(thisPolygon!) as! Polygon
+            }
+            
+            // Rendering of polygon on map
+            let pathOfFinalPolygon = GMSMutablePath(polygon: finalPolygon)
+            unionPolygon = GMSPolygon(path: pathOfFinalPolygon)
+            unionPolygon?.strokeWidth = 1.0
+            unionPolygon?.strokeColor = .black
+            unionPolygon?.fillColor = UIColor.green.withAlphaComponent(0.2)
+            unionPolygon?.map = mapView
+            
+            // ----------------------------------------
+            //        Data to be sent to server
+            //  1. The string encoded (https://developers.google.com/maps/documentation/utilities/polylinealgorithm) path of unionPolyline
+            //  2. The array of coordinate point in a sequence
+            // ----------------------------------------
+            
+            // 1. The string encoded path
+            let stringEncodedPath = unionPolygon?.path?.encodedPath()
+            // 2. Array of coordinate points
+            let arrayOfBoundingCoordinates = unionPolygon?.path?.coordinates
+            
+        } else {
+            print("ERROR: Can't draw the route polygon less than two marker")
         }
     }
 
 }
 extension RouteDrawingVC : GMSMapViewDelegate {
+    
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
         
+        if isDraggingGoingOn { return }
+        
+        // Create a new marker
         let newMarker = GMSMarker(position: coordinate)
         newMarker.isDraggable = true
         newMarker.appearAnimation = .pop
         newMarker.map = self.mapView
         arrayOfPlacedMarkers.append(newMarker)
-        if arrayOfPlacedMarkers.count > 1 {
-            drawRouteOverlayFromCoordinates(coordinates: arrayOfPlacedMarkers.map {$0.position})
-        }
+        
+        // Draw safe routes
+        drawSafeRouteGoingThroughMarkers(markers: arrayOfPlacedMarkers)
     }
     
     // MARK: DRAGGING A MARKER
     func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
-
+        isDraggingGoingOn = true
     }
     func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
         
     }
     func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
-
+        isDraggingGoingOn = false
+        if marker == currentLocationMarker { return }
+        drawSafeRouteGoingThroughMarkers(markers: arrayOfPlacedMarkers)
     }
-    
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         return true
     }
-    
 }
 
 extension RouteDrawingVC: CLLocationManagerDelegate {
@@ -123,50 +151,22 @@ extension RouteDrawingVC: CLLocationManagerDelegate {
         guard let locaiton = locations.last else {
             return
         }
-        
         if let _  = currentLocationCoordinate {
-            
+            // We received location update earlier
         } else {
+            // Received location for the very first time
             currentLocationCoordinate = locaiton.coordinate
             let camera = GMSCameraPosition.camera(withLatitude: currentLocationCoordinate!.latitude,
-                                                  longitude: currentLocationCoordinate!.longitude, zoom: 14)
+                                                  longitude: currentLocationCoordinate!.longitude,
+                                                  zoom: 14)
             mapView.camera = camera
         }
-        
         currentLocationMarker.appearAnimation = .pop
         currentLocationMarker.position = locaiton.coordinate
         currentLocationMarker.map = self.mapView
     }
 }
-extension GMSMutablePath {
-    convenience public init(polygon: Polygon) {
-        self.init()
-        for location in polygon.exteriorRing.points{
-            add(CLLocationCoordinate2DFromCoordinate(location))
-        }
-    }
-}
-extension Geometry {
-    class func createFrom(linePathCoordinates: [CLLocationCoordinate2D]) -> Geometry? {
-        // Create String from linePathCoordinates
-        // Geometry.create("LINESTRING(35 10, 45 45, 15 40, 10 20, 35 10)")
-        
-        let coordinatePairs = linePathCoordinates.map { "\($0.latitude) \($0.longitude)" }.joined(separator: ", ")
-        let finalString = "LINESTRING(\(coordinatePairs))"
-        
-        return Geometry.create(finalString)
-    }
-    class func createPolygonFrom(polygonCoordinates: [CLLocationCoordinate2D]) -> Polygon? {
-        var circularRing:[CLLocationCoordinate2D] = polygonCoordinates
-        circularRing.append(polygonCoordinates.first!)
 
-        let coordinateArray = circularRing.map { Coordinate(x: $0.longitude, y: $0.latitude)}
-        
-        guard let linerRing = LinearRing(points: coordinateArray) else {
-            return nil
-        }
-        return Polygon(shell: linerRing, holes: nil)
-    }
-}
+
 
 

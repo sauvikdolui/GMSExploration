@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		455D08BC20B3FBB000E47998 /* RouteDrawingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455D08BB20B3FBB000E47998 /* RouteDrawingVC.swift */; };
 		455FB193206E1728009C0E99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455FB192206E1728009C0E99 /* AppDelegate.swift */; };
-		455FB195206E1728009C0E99 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455FB194206E1728009C0E99 /* ViewController.swift */; };
+		455FB195206E1728009C0E99 /* SafeZoneDrawingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455FB194206E1728009C0E99 /* SafeZoneDrawingVC.swift */; };
 		455FB198206E1728009C0E99 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 455FB196206E1728009C0E99 /* Main.storyboard */; };
 		455FB19B206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 455FB199206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodeld */; };
 		455FB19D206E1728009C0E99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 455FB19C206E1728009C0E99 /* Assets.xcassets */; };
@@ -50,7 +50,7 @@
 		455D08BD20B4056000E47998 /* ProSkoolLocaitonTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProSkoolLocaitonTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		455FB18F206E1728009C0E99 /* ProSkoolLocaitonTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProSkoolLocaitonTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		455FB192206E1728009C0E99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		455FB194206E1728009C0E99 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		455FB194206E1728009C0E99 /* SafeZoneDrawingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeZoneDrawingVC.swift; sourceTree = "<group>"; };
 		455FB197206E1728009C0E99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		455FB19A206E1728009C0E99 /* ProSkoolLocaitonTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProSkoolLocaitonTest.xcdatamodel; sourceTree = "<group>"; };
 		455FB19C206E1728009C0E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 			children = (
 				4592813420B407E3005CC98B /* Google-Maps-iOS-Utils */,
 				455FB192206E1728009C0E99 /* AppDelegate.swift */,
-				455FB194206E1728009C0E99 /* ViewController.swift */,
+				455FB194206E1728009C0E99 /* SafeZoneDrawingVC.swift */,
 				455D08BB20B3FBB000E47998 /* RouteDrawingVC.swift */,
 				455FB196206E1728009C0E99 /* Main.storyboard */,
 				455FB19C206E1728009C0E99 /* Assets.xcassets */,
@@ -468,7 +468,7 @@
 				459282ED20B40A8C005CC98B /* GMUWeightedLatLng.m in Sources */,
 				459282F020B40A8C005CC98B /* GMUKMLParser.m in Sources */,
 				459282FB20B40A8C005CC98B /* GQTPointQuadTree.m in Sources */,
-				455FB195206E1728009C0E99 /* ViewController.swift in Sources */,
+				455FB195206E1728009C0E99 /* SafeZoneDrawingVC.swift in Sources */,
 				459282EE20B40A8C005CC98B /* GMUGradient.m in Sources */,
 				459282E920B40A8C005CC98B /* GMUNonHierarchicalDistanceBasedAlgorithm.m in Sources */,
 				459282F820B40A8C005CC98B /* GMUPoint.m in Sources */,

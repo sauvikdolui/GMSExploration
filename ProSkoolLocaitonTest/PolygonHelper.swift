@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 import GoogleMaps
-
+import GEOSwift
 
 extension CLLocationCoordinate2D: Comparable {
     public static func < (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
@@ -20,7 +20,23 @@ extension CLLocationCoordinate2D: Comparable {
         return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
 }
-
+extension GMSMutablePath {
+    convenience public init(polygon: Polygon) {
+        self.init()
+        for location in polygon.exteriorRing.points{
+            add(CLLocationCoordinate2DFromCoordinate(location))
+        }
+    }
+}
+extension GMSPath {
+    var coordinates: [CLLocationCoordinate2D] {
+        var coordinates = [CLLocationCoordinate2D]()
+        for i in 0..<count() {
+            coordinates.append(coordinate(at: i))
+        }
+        return coordinates
+    }
+}
 class PolygonHelper {
     
     class func getClockWiseSequenceFromCoordinateArray(cordinates: [CLLocationCoordinate2D]) ->  [CLLocationCoordinate2D] {
@@ -58,9 +74,6 @@ class PolygonHelper {
         } else {
             m2 = (B.latitude - C.latitude) / (B.longitude - C.longitude)
         }
-        
-        
-        
         let value1 = (m2 - m1) / (1 + m1 * m2)
         
         let anglePositiveVe = atan(value1)
@@ -260,5 +273,23 @@ extension CLLocationCoordinate2D {
         default:
             return .first
         }
+    }
+}
+extension Geometry {
+    class func createFrom(linePathCoordinates: [CLLocationCoordinate2D]) -> Geometry? {
+        // Create String from linePathCoordinates
+        // Geometry.create("LINESTRING(35 10, 45 45, 15 40, 10 20, 35 10)")
+        let coordinatePairs = linePathCoordinates.map { "\($0.latitude) \($0.longitude)" }.joined(separator: ", ")
+        let finalString = "LINESTRING(\(coordinatePairs))"
+        return Geometry.create(finalString)
+    }
+    class func createPolygonFrom(polygonCoordinates: [CLLocationCoordinate2D]) -> Polygon? {
+        var circularRing:[CLLocationCoordinate2D] = polygonCoordinates
+        circularRing.append(polygonCoordinates.first!)
+        let coordinateArray = circularRing.map { Coordinate(x: $0.longitude, y: $0.latitude)}
+        guard let linerRing = LinearRing(points: coordinateArray) else {
+            return nil
+        }
+        return Polygon(shell: linerRing, holes: nil)
     }
 }
