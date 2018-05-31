@@ -36,6 +36,14 @@ extension GMSPath {
         }
         return coordinates
     }
+    public convenience init(linearRing: LinearRing) {
+        let mutablePath = GMSMutablePath()
+        for i in 0..<linearRing.points.count {
+            let point = linearRing.points[i]
+            mutablePath.add(CLLocationCoordinate2D(latitude: point.y, longitude: point.x))
+        }
+        self.init(path: mutablePath)
+    }
 }
 class PolygonHelper {
     

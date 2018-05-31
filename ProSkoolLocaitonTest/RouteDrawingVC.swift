@@ -86,14 +86,19 @@ class RouteDrawingVC: UIViewController {
                 let thisPolygon =  Geometry.createPolygonFrom(polygonCoordinates: polygonPointsArray[i])
                 finalPolygon = finalPolygon.union(thisPolygon!) as! Polygon
             }
+            // Calculation of internal holes
+
+            
             
             // Rendering of polygon on map
             let pathOfFinalPolygon = GMSMutablePath(polygon: finalPolygon)
             unionPolygon = GMSPolygon(path: pathOfFinalPolygon)
+            unionPolygon?.holes = finalPolygon.interiorRings.map{ GMSPath(linearRing: $0)}
             unionPolygon?.strokeWidth = 1.0
             unionPolygon?.strokeColor = .black
             unionPolygon?.fillColor = UIColor.green.withAlphaComponent(0.2)
             unionPolygon?.map = mapView
+            
             
             // ----------------------------------------
             //        Data to be sent to server
