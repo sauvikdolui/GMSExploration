@@ -108,7 +108,9 @@ class RouteDrawingVC: UIViewController {
             
             // 1. The string encoded path
             let stringEncodedPath = unionPolygon?.path?.encodedPath()
-            // 2. Array of coordinate points
+            // 2. Array of string encoded path for holes
+            let arrayStringEncodedPathForHoles = unionPolygon?.holes?.map { $0.encodedPath()}
+            // 3. Array of coordinate points
             let arrayOfBoundingCoordinates = unionPolygon?.path?.coordinates
             
         } else {
