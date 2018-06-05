@@ -47,6 +47,12 @@ extension GMSPath {
 }
 class PolygonHelper {
     
+    /// Creates a clock-wise sequence from an array of CLLocationCoordinate2D
+    ///
+    /// - Parameter cordinates: list of randomly choosen coordinates
+    /// - Returns: a new array where list of coordinates are sorted accodring to the angle
+    ///            in clock wise direction, they are making with mean point(center point)
+    /// - Note: For algo refer to [This Question](https://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs)
     class func getClockWiseSequenceFromCoordinateArray(cordinates: [CLLocationCoordinate2D]) ->  [CLLocationCoordinate2D] {
         
         let xCoordinates = cordinates.reduce(0.0, {
@@ -65,42 +71,16 @@ class PolygonHelper {
         }
         return  coordinatePositions.sorted(by: {
             return $0.angle360Measure < $1.angle360Measure
-            
         }).map { $0.coordinate }
     }
-    class func getAngleABOFromPoints(A : CLLocationCoordinate2D, B: CLLocationCoordinate2D, C: CLLocationCoordinate2D) -> Double {
-        
-        var m1 = 0.0
-        if A.longitude - B.longitude == 0 {
-            m1 = tan(Double.pi / 2)
-        } else {
-            m1 = (A.latitude - B.latitude) / (A.longitude - B.longitude)
-        }
-        var m2 = 0.0
-        if B.longitude - C.longitude == 0 {
-            m2 = tan(Double.pi / 2)
-        } else {
-            m2 = (B.latitude - C.latitude) / (B.longitude - C.longitude)
-        }
-        let value1 = (m2 - m1) / (1 + m1 * m2)
-        
-        let anglePositiveVe = atan(value1)
-        let angleNegativeVe = atan(-value1)
-        
-        if fabs(anglePositiveVe) < fabs(angleNegativeVe) {
-            return fabs(anglePositiveVe) * (180 / Double.pi)
-        } else {
-            return fabs(angleNegativeVe) * (180 / Double.pi)
-        }
-    }
-    static func getPointOnHalfAngle(A : CLLocationCoordinate2D, B: CLLocationCoordinate2D, C: CLLocationCoordinate2D, distance: Double ) -> CLLocationCoordinate2D{
-
-        let angle = PolygonHelper.getAngleABOFromPoints(A: A, B: B, C: C) / 2.0
-        let dX =  distance * cos(angle * (Double.pi / 180.0))
-        let dY =  distance * sin(angle * (Double.pi / 180.0))
-        return CLLocationCoordinate2D(latitude: B.latitude + dY, longitude: B.longitude + dX)
-        
-    }
+    
+    
+    /// Creates a rectangle with four points where axis of the rectange is parallel to the straight line AB.
+    /// There are two offset added points for each of A and B. The final rectangle always coveres AB
+    /// - Parameters:
+    ///   - A: First point of the straight line
+    ///   - B: Second point of the straight line
+    /// - Returns: The four points in a sequence of the rectangle
     static func getCoveringPointsFor(A: CLLocationCoordinate2D, B: CLLocationCoordinate2D) -> [CLLocationCoordinate2D] {
         
         let distance = 0.0001
@@ -179,6 +159,15 @@ class PolygonHelper {
         }
     }
     
+    /// Adds a distance offset on a straight line. If two points are A and B, it will return two points(A',B')
+    /// on the extented straight line. Both A' and B' do not resides on AB, but they both on extended AB. Distance of
+    /// AA' and BB' are same.
+    ///
+    /// - Parameters:
+    ///   - A: The first point of straight line
+    ///   - B: The second point of straight line
+    ///   - distance: The offset distance
+    /// - Returns: A tuple of two coordinates(A', B')
     static func getDistanceAddedPoints(A: CLLocationCoordinate2D,
                                        B: CLLocationCoordinate2D,
                                        distance: Double) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
@@ -217,7 +206,7 @@ class PolygonHelper {
             return (updatedTop, updatedBottom)
         }
         
-        }
+    }
     
 }
 
@@ -227,6 +216,11 @@ struct CLLocationCoordinatePositionInfo {
     let distanceFromOrigin: Double
     let meanCoordinate: CLLocationCoordinate2D
     
+    /// A structure of meta data for calculation of a clockwise sequence from an array of coordinates
+    ///
+    /// - Parameters:
+    ///   - coordinate: The point/coordinates for which meta data are to be calculated
+    ///   - meanCoordinate: The center point of the all coordinates
     init(coordinate: CLLocationCoordinate2D, meanCoordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         self.meanCoordinate = meanCoordinate
@@ -256,19 +250,17 @@ struct CLLocationCoordinatePositionInfo {
         }
     }
     static func getDistanceFromMean(mean: CLLocationCoordinate2D, coordinate: CLLocationCoordinate2D) -> Double {
-        
         let origin = CLLocation(latitude: mean.latitude, longitude: mean.longitude)
         let locationPoint = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         return locationPoint.distance(from: origin)
     }
 }
 
-
 enum CoordinatePostion: Int {
     case first, second, third, fourth
 }
 extension CLLocationCoordinate2D {
-    func  getCoordinatePosition(coordinate:CLLocationCoordinate2D, mean: CLLocationCoordinate2D) -> CoordinatePostion  {
+    func getCoordinatePosition(coordinate:CLLocationCoordinate2D, mean: CLLocationCoordinate2D) -> CoordinatePostion  {
         switch self {
         case let coordinate where coordinate.longitude >= mean.longitude && coordinate.latitude >= mean.latitude:
             return .first
